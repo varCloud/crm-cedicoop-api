@@ -12,33 +12,31 @@ async function generateToken(req, res) {
     try {
         const { user, password } = req.body;
         const postData = req.body;
-        if (Object.keys(postData).length == 0) {
-            res.status(404).json({ status: 401, message: "Parametros de entrada no validos" });
-        }
+        if (Object.keys(postData).length != 0) {
+            var usuarioKey = await tokenDAO.generateToken(req.body)
+            console.log("usuario key ::::::::", usuarioKey)
 
-        //var usuarioKey = await tokenDAO.generateToken(req.body)
-        //console.log("usuario key ::::::::", usuarioKey.model.middlewareApiKey)
-
-        //if (usuarioKey.status == 200) { //si las contraseñas son validas a nivel de base de datos
-            var tokenData = {
-                usuario: user,
-                contrasena: password,
-                idCustomer: 1,//usuarioKey.model.idCustomer,
-                middlewareApiKey: "sdg5sd+g5sdhs56+",//usuarioKey.model.middlewareApiKey
+            if (usuarioKey.estatus == 200) { //si las contraseñas son validas a nivel de base de datos
+                var tokenData = {
+                    usuario: user,
+                    contrasena: password,
+                    idCliente: usuarioKey.model.idCliente,
+                    middlewareApiKey: usuarioKey.model.middlewareApiKey
+                }
+                var token = jwt.sign(tokenData, jwtClave, {
+                    expiresIn: jwtTiempoToken
+                })
+                return res.status(200).json({ status: 200, token: token, message: "Token generado correctamente." });
             }
-
-            var token = jwt.sign(tokenData, jwtClave, {
-                expiresIn: jwtTiempoToken
-            })
-            res.status(200).json({ status: 200, token: token, message: "Token generado correctamente." });
-            /*else {
-                res.status(401).json({ estatus: 401, mensaje: "Credenciales incorrectas o vencidas." });
-            }*/
-        //} else {
-         //   res.status(404).json({ status: 500, message: "Error al consumir el api, verifique los datos enviados." })
-        //}
+            else {
+                return res.status(401).json({ estatus: 401, mensaje: "Credenciales incorrectas o vencidas." });
+            }
+        }
+        else {
+            return res.status(404).json({ status: 500, message: "Error al consumir el api, verifique los datos enviados." })
+        }
     } catch (err) {
-        res.status(500).json({ status: 500, message: "Error interno del servidor" });
+        return res.status(500).json({ status: 500, message: "Error interno del servidor" });
     }
 }
 
@@ -72,10 +70,10 @@ async function validateToken(request, response, next) {
         });
         //var resulValidToken = await tokenDAO.validateToken(usuario); ///validación de token
         //if (resulValidToken.status == 200) {
-            return next();
+        return next();
         //} else {
         //   return response.status(500).json({ status: 500, message: resulValidToken.message || "Token invalido" });
-       // }
+        // }
     } catch (err) {
         return response.status(500).json({ status: 500, message: "Error interno del servidor" });
     }
