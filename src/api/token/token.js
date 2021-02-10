@@ -32,11 +32,11 @@ const controller = require("./tokenController");
  *  ResponseToken:
  *   type: object
  *   properties:
- *     status:
+ *     estatus:
  *       type: integer
  *       format: int64
  *       description: identificador  de la respuesta de ejecucion del servicio
- *     message:
+ *     mensaje:
  *       type: string
  *       description: descripcion del status
  *     token:

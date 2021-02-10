@@ -26,10 +26,10 @@ const token = require("../token/tokenController");
  *  BodyNacionalidad:
  *   type: object
  *   properties:
- *     status:
+ *     estatus:
  *       type: integer
  *       format: int64
- *     message:
+ *     mensaje:
  *       type: integer
  *       format: int64
  *     nacionalidades:
@@ -54,7 +54,7 @@ const token = require("../token/tokenController");
  *   xml:
  *     name: Nacionalidad
  */
-router.get("/nacionalidades", controller.nacionalidades);
+router.get("/nacionalidades", token.validateToken,controller.nacionalidades);
 
 /**
  * @swagger
@@ -79,10 +79,10 @@ router.get("/nacionalidades", controller.nacionalidades);
  *  BodyOcupacion:
  *   type: object
  *   properties:
- *     status:
+ *     estatus:
  *       type: integer
  *       format: int64
- *     message:
+ *     mensaje:
  *       type: integer
  *       format: int64
  *     ocupaciones:
@@ -104,7 +104,7 @@ router.get("/nacionalidades", controller.nacionalidades);
  *   xml:
  *     name: Ocupacion
  */
-router.get("/ocupaciones", controller.ocupaciones);
+router.get("/ocupaciones",token.validateToken, controller.ocupaciones);
 
 /**
  * @swagger
@@ -129,10 +129,10 @@ router.get("/ocupaciones", controller.ocupaciones);
  *  BodyTipoIdentificacion:
  *   type: object
  *   properties:
- *     status:
+ *     estatus:
  *       type: integer
  *       format: int64
- *     message:
+ *     mensaje:
  *       type: integer
  *       format: int64
  *     tiposIdentificaciones:
@@ -154,7 +154,7 @@ router.get("/ocupaciones", controller.ocupaciones);
  *   xml:
  *     name: TipoIdentificacion
  */
-router.get("/tiposIdentificaciones", controller.tiposIdentificaciones);
+router.get("/tiposIdentificaciones", token.validateToken,controller.tiposIdentificaciones);
 
 /**
  * @swagger
@@ -179,10 +179,10 @@ router.get("/tiposIdentificaciones", controller.tiposIdentificaciones);
  *  BodyGenero:
  *   type: object
  *   properties:
- *     status:
+ *     estatus:
  *       type: integer
  *       format: int64
- *     message:
+ *     mensaje:
  *       type: integer
  *       format: int64
  *     generos:
@@ -204,7 +204,7 @@ router.get("/tiposIdentificaciones", controller.tiposIdentificaciones);
  *   xml:
  *     name: Genero
  */
-router.get("/genero", controller.genero);
+router.get("/genero",token.validateToken, controller.genero);
 
 
 /**
@@ -230,10 +230,10 @@ router.get("/genero", controller.genero);
  *  BodyCadenaComercial:
  *   type: object
  *   properties:
- *     status:
+ *     estatus:
  *       type: integer
  *       format: int64
- *     message:
+ *     mensaje:
  *       type: integer
  *       format: int64
  *     cadenasComerciales:
@@ -255,7 +255,7 @@ router.get("/genero", controller.genero);
  *   xml:
  *     name: CadenaComercial
  */
-router.get("/cadenasComerciales", controller.cadenasComerciales);
+router.get("/cadenasComerciales",token.validateToken, controller.cadenasComerciales);
 
 
 /**
@@ -294,10 +294,10 @@ router.get("/cadenasComerciales", controller.cadenasComerciales);
  *  BodySucursalesCadenaComercial:
  *   type: object
  *   properties:
- *     status:
+ *     estatus:
  *       type: integer
  *       format: int64
- *     message:
+ *     mensaje:
  *       type: integer
  *       format: int64
  *     sucursales:
@@ -319,6 +319,6 @@ router.get("/cadenasComerciales", controller.cadenasComerciales);
  *   xml:
  *     name: Sucursal
  */
-router.post("/sucursalesCadenaComercial", controller.sucursalesCadenaComercial);
+router.post("/sucursalesCadenaComercial",token.validateToken, controller.sucursalesCadenaComercial);
 
 module.exports = router;

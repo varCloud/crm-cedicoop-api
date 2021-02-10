@@ -112,8 +112,6 @@ const token = require("../token/tokenController");
  *            type: string
  *          telefono:
  *            type: string
- *          estado:
- *            type: string
  *          entidadFederativa:
  *            type: string
  *     transaccion:
@@ -151,10 +149,10 @@ const token = require("../token/tokenController");
  *  ResponseGenerar:
  *   type: object
  *   properties:
- *     status:
+ *     estatus:
  *       type: integer
  *       format: int64
- *     message:
+ *     mensaje:
  *       type: string
  *     model:
  *        type: object
@@ -206,10 +204,10 @@ router.post("/generar", token.validateToken, controller.generar);
  *  ResponseConsultar:
  *   type: object
  *   properties:
- *     status: 
+ *     estatus: 
  *       type: integer
  *       format: int64
- *     message:
+ *     mensaje:
  *       type: string
  *     model:
  *      type: object
@@ -252,7 +250,7 @@ router.post("/generar", token.validateToken, controller.generar);
  *         
  *          
  */
-router.post("/consultar", controller.consultar);
+router.post("/consultar",token.validateToken, controller.consultar);
 
 /**
  * @swagger
@@ -297,10 +295,10 @@ router.post("/consultar", controller.consultar);
  *  ResponseAprovisionar:
  *   type: object
  *   properties:
- *     status: 
+ *     estatus: 
  *       type: integer
  *       format: int64
- *     message:
+ *     mensaje:
  *       type: string
  *     model:
  *        type: object
@@ -315,7 +313,7 @@ router.post("/consultar", controller.consultar);
  *             description: Otp necesario para realizar el cobro de un giro de envío de dinero.
  *          
  */
-router.post("/aprovisionar", controller.aprovisionar);
+router.post("/aprovisionarCobro", token.validateToken,controller.aprovisionarCobro);
 
 /**
  * @swagger
@@ -384,10 +382,10 @@ router.post("/aprovisionar", controller.aprovisionar);
  *  ResponseCobrar:
  *   type: object
  *   properties:
- *     status: 
+ *     estatus: 
  *       type: integer
  *       format: int64
- *     message:
+ *     mensaje:
  *       type: string
  *     model:
  *        type: object
@@ -402,7 +400,7 @@ router.post("/aprovisionar", controller.aprovisionar);
  *             description: Otp necesario para realizar el cobro de un giro de envío de dinero.
  *          
  */
-router.post("/cobrar", controller.cobrar);
+router.post("/cobrar", token.validateToken,controller.cobrar);
 
 /**
  * @swagger
@@ -461,10 +459,10 @@ router.post("/cobrar", controller.cobrar);
  *  ResponseCancelar:
  *   type: object
  *   properties:
- *     status: 
+ *     estatus: 
  *       type: integer
  *       format: int64
- *     message:
+ *     mensaje:
  *       type: string
  *     model:
  *        type: object
@@ -479,7 +477,7 @@ router.post("/cobrar", controller.cobrar);
  *             description: fecha y hora de la ejecución de la cancelación.
  *          
  */
-router.post("/cancelar", controller.cobrar);
+router.post("/cancelar",token.validateToken, controller.cobrar);
 
 /**
  * @swagger
@@ -523,6 +521,9 @@ router.post("/cancelar", controller.cobrar);
  *             type: integer
  *             format: int64
  *             description: Identificador de acuerdo al catalogo de cadenas sucursales proporcionado por la api -> catalogo/sucursalesCadenaComercial
+ *         otpTransaccion:
+ *             type: string
+ *             description: Otp necesario para realizar la acutualizacion de los datos de un remitente, el OTP se obtiene de acuerdo al servicio  ->/giro/aprovisionarActualiza
  *     remitente:
  *       type: object
  *       properties: 
@@ -549,10 +550,10 @@ router.post("/cancelar", controller.cobrar);
  *  ResponseActualizar:
  *   type: object
  *   properties:
- *     status: 
+ *     estatus: 
  *       type: integer
  *       format: int64
- *     message:
+ *     mensaje:
  *       type: string
  *     model:
  *        type: object
@@ -567,6 +568,70 @@ router.post("/cancelar", controller.cobrar);
  *             description: fecha y hora de la ejecución de la cancelación.
  *          
  */
-router.post("/actualizar", controller.cobrar);
+router.post("/actualizar",token.validateToken, controller.cobrar);
+
+
+/**
+ * @swagger
+ *  /giro/aprovisionarActualiza:
+ *  post:
+ *     tags:
+ *       - Giro
+ *     description: Servicio para aprovisionar un giro de envío de dinero con el objetivo de actualizar la informacion del remitente.
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *     - in: "header"
+ *       name: "authorization-pp"
+ *       example: "Bearer-PP TOKEN"
+ *     - in: "body"
+ *       name: "body"
+ *       description: "Estructura del request para la peticion del servicio"
+ *       required: true
+ *       schema:
+ *         $ref: "#/definitions/RequestAprovicionarActualiza"
+ *     responses:
+ *       200:
+ *         description: Regresa un estatus,mensaje y datos de aprovisionamiento de un giro.
+ *         schema:
+ *           $ref: '#/definitions/ResponseAprovisionarActualiza'
+ *
+ * definitions:
+ *  RequestAprovicionarActualiza:
+ *   type: object
+ *   properties:
+ *     folioTransaccion:
+ *       type: string
+ *     idCadenaComercial:
+ *       type: integer
+ *       format: int64
+ *       description: Identificador de acuerdo al catalogo de cadenas comerciales proporcionado por la api
+ *     idSucursal:
+ *       type: integer
+ *       format: int64
+ *       description: Identificador de acuerdo al catalogo de cadenas sucursales proporcionado por la api -> catalogo/sucursalesCadenaComercial
+ * 
+ *  ResponseAprovisionarActualiza:
+ *   type: object
+ *   properties:
+ *     estatus: 
+ *       type: integer
+ *       format: int64
+ *     mensaje:
+ *       type: string
+ *     model:
+ *        type: object
+ *        properties:
+ *          folioTransaccion:
+ *             type: string
+ *          estatusTransaccion:
+ *             type: integer
+ *             format: int64
+ *          otpTransaccion:
+ *             type: string
+ *             description: Otp necesario para realizar el cobro de un giro de envío de dinero.
+ *          
+ */
+router.post("/aprovisionarActualiza",token.validateToken, controller.cobrar);
 
 module.exports = router;

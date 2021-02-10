@@ -11,6 +11,7 @@ const giroDAO = require("../../DAO/giroDAO");
 async function generar(req, res) {
     try {
         postData = req.body
+        postData.usuario = req.usuario
         let data = await giroDAO.generar(postData);
         res.status(200).json(data);
     } catch (err) {
@@ -20,31 +21,19 @@ async function generar(req, res) {
 
 async function consultar(req, res) {
     try {
-        res.status(200).json({
-            status: 200, message: "Giro disponible", model: {
-                model: {
-                    destinatario: {
-                        nombres: "Ulises", primerApellido: "Tellez", segundoApellido: "X", telefono: "4435458574", estado: "Michoacan", ciudad: "Morelia"
-                    },
-                    transaccion: {
-                        cadenaComercial: "Price Shoes", sucursal: "La roma 25", monto: "2500.00", folioTransaccion: "123456789", estatusTransaccion: 3, fechaTransaccion: new Date()
-                    }
-                }
-            }
-        });
+        postData = req.body
+        let data = await giroDAO.consultar(postData);
+        res.status(200).json(data);
     } catch (err) {
         res.status(500).json({ status: 500, message: "Error internal server" });
     }
 }
 
-async function aprovisionar(req, res) {
+async function aprovisionarCobro(req, res) {
     try {
-        res.status(200).json({
-            status: 200, message: "Se realizo el aprovisionamiento de manera correcta",
-            model: {
-                folioTransaccion: "123456789", estatusTransaccion: 3, otpTransaccion: "12345"
-            }
-        });
+        postData = req.body
+        let data = await giroDAO.aprovisionarCobro(postData);
+        res.status(200).json(data);
     } catch (err) {
         res.status(500).json({ status: 500, message: "Error internal server" });
     }
@@ -52,20 +41,51 @@ async function aprovisionar(req, res) {
 
 async function cobrar(req, res) {
     try {
-        res.status(200).json({
-            status: 200, message: "El cobro del giro se realizo de manera correcta",
-            model: {
-                folioTransaccion: "123456789", estatusTransaccion: 4, fechaCobro: new Date()
-            }
-        });
+        postData = req.body
+        let data = await giroDAO.cobrar(postData);
+        res.status(200).json(data);
     } catch (err) {
         res.status(500).json({ status: 500, message: "Error internal server" });
     }
 }
 
+async function cancelar(req, res) {
+    try {
+        postData = req.body
+        let data = await giroDAO.cancelar(postData);
+        res.status(200).json(data);
+    } catch (err) {
+        res.status(500).json({ status: 500, message: "Error internal server" });
+    }
+}
+
+async function actualizar(req, res) {
+    try {
+        postData = req.body
+        let data = await giroDAO.actualizar(postData);
+        res.status(200).json(data);
+    } catch (err) {
+        res.status(500).json({ status: 500, message: "Error internal server" });
+    }
+}
+
+async function aprovisionarActualiza(req, res) {
+    try {
+        postData = req.body
+        let data = await giroDAO.aprovisionarActualiza(postData);
+        res.status(200).json(data);
+    } catch (err) {
+        res.status(500).json({ status: 500, message: "Error internal server" });
+    }
+}
+
+
 module.exports = {
     generar,
     consultar,
-    aprovisionar,
-    cobrar
+    aprovisionarCobro,
+    cobrar,
+    cancelar,
+    actualizar,
+    aprovisionarActualiza
 }
