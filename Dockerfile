@@ -15,5 +15,5 @@ CMD ["npm", "start"]
 # heroku login
 # docker ps
 # heroku container:login
-# heroku container:push web -a mvno-api-ws
-# heroku container:release web -a mvno-api-ws
+# heroku container:push web -a envnac-ws-api
+# heroku container:release web -a envnac-ws-api

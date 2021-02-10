@@ -41,7 +41,9 @@ const token = require("../token/tokenController");
  *     remitente:
  *       type: object
  *       properties: 
- *          nombres:
+ *          primerNombre:
+ *            type: string
+ *          segundoNombre:
  *            type: string
  *          primerApellido:
  *            type: string
@@ -100,7 +102,9 @@ const token = require("../token/tokenController");
  *     destinatario:
  *       type: object
  *       properties: 
- *          nombres:
+ *          primerNombre:
+ *            type: string
+ *          segundoNombre:
  *            type: string
  *          primerApellido:
  *            type: string
@@ -110,7 +114,7 @@ const token = require("../token/tokenController");
  *            type: string
  *          estado:
  *            type: string
- *          ciudad:
+ *          entidadFederativa:
  *            type: string
  *     transaccion:
  *       type: object
@@ -119,11 +123,24 @@ const token = require("../token/tokenController");
  *            type: integer
  *            format: int64
  *            description: Identificador de acuerdo al catalogo de cadenas comerciales proporcionado por la api
- *          numeroSucursal:
- *            type: string
- *            description: Identificador de sucursal de parte del integrador
+ *          idSucursal:
+ *            type: integer
+ *            format: int64
+ *            description: Identificador de acuerdo al catalogo de cadenas sucursales proporcionado por la api -> catalogo/sucursalesCadenaComercial
+ *          idCadenaComercialDestinatario:
+ *            type: integer
+ *            format: int64
+ *            description: Identificador de acuerdo al catalogo de cadenas comerciales proporcionado por la api
+ *          idSucursalDestinatario:
+ *            type: integer
+ *            format: int64
+ *            description: Identificador de acuerdo al catalogo de cadenas sucursales proporcionado por la api -> catalogo/sucursalesCadenaComercial
  *          monto:
- *            type: string
+ *            type: number
+ *            format: double
+ *          comision:
+ *            type: number
+ *            format: double
  *     dataAdicional:
  *       type: object
  *       properties: 
@@ -151,7 +168,7 @@ const token = require("../token/tokenController");
  *             type: string
  *          
  */
-router.post("/generar", controller.generar);
+router.post("/generar", token.validateToken, controller.generar);
 
 
 /**
@@ -268,9 +285,14 @@ router.post("/consultar", controller.consultar);
  *   properties:
  *     folioTransaccion:
  *       type: string
- *     numeroSucursal:
- *       type: string
- *       description: Identificador de sucursal de parte del integrador
+ *     idCadenaComercial:
+ *       type: integer
+ *       format: int64
+ *       description: Identificador de acuerdo al catalogo de cadenas comerciales proporcionado por la api
+ *     idSucursal:
+ *       type: integer
+ *       format: int64
+ *       description: Identificador de acuerdo al catalogo de cadenas sucursales proporcionado por la api -> catalogo/sucursalesCadenaComercial
  * 
  *  ResponseAprovisionar:
  *   type: object
@@ -324,20 +346,40 @@ router.post("/aprovisionar", controller.aprovisionar);
  *  RequestCobrar:
  *   type: object
  *   properties:
- *     folioTransaccion:
- *       type: string
- *     numeroSucursal:
- *       type: string
- *       description: Identificador de sucursal de parte del integrador
- *     otpTransaccion:
- *       type: string
- *       description: Otp que se obtiene en el ws de aprovisionar.
- *     dataAdicional:
+  *     transaccion:
  *       type: object
  *       properties: 
- *          data:
+ *          folioTransaccion:
  *            type: string
- *            description: Información adicional de parte del integrador
+ *          numeroSucursal:
+ *            type: string
+ *            description: Identificador de sucursal de parte del integrador
+ *          otpTransaccion:
+ *            type: string
+ *            description: Otp que se obtiene en el ws de aprovisionar.
+ *     destinatario:
+ *       type: object
+ *       properties: 
+ *          primerNombre:
+ *            type: string
+ *          segundoNombre:
+ *            type: string
+ *          primerApellido:
+ *            type: string
+ *          segundoApellido:
+ *            type: string
+ *          telefono:
+ *            type: string
+ *          estado:
+ *            type: string
+ *          entidadFederativa:
+ *            type: string
+ *     dataAdicional:
+ *        type: object
+ *        properties: 
+ *           data:
+ *             type: string
+ *             description: Información adicional de parte del integrador
  * 
  *  ResponseCobrar:
  *   type: object
@@ -361,5 +403,170 @@ router.post("/aprovisionar", controller.aprovisionar);
  *          
  */
 router.post("/cobrar", controller.cobrar);
+
+/**
+ * @swagger
+ *  /giro/cancelar:
+ *  post:
+ *     tags:
+ *       - Giro
+ *     description: Servicio para cancelar el giro de envío de dinero.
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *     - in: "header"
+ *       name: "authorization-pp"
+ *       example: "Bearer-PP TOKEN"
+ *     - in: "body"
+ *       name: "body"
+ *       description: "Estructura del request para la peticion del servicio"
+ *       required: true
+ *       schema:
+ *         $ref: "#/definitions/RequestCancelar"
+ *     responses:
+ *       200:
+ *         description: Regresa un estatus,mensaje y datos de una transacción en caso de realizar la cancelación exitosa.
+ *         schema:
+ *           $ref: '#/definitions/ResponseCancelar'
+ *
+ * definitions:
+ *  RequestCancelar:
+ *   type: object
+ *   properties:
+ *     transaccion:
+ *       type: object
+ *       properties: 
+ *         folioTransaccion:
+ *             type: string
+ *         idCadenaComercial:
+ *             type: integer
+ *             format: int64
+ *             description: Identificador de acuerdo al catalogo de cadenas comerciales proporcionado por la api
+ *         idSucursal:
+ *             type: integer
+ *             format: int64
+ *             description: Identificador de acuerdo al catalogo de cadenas sucursales proporcionado por la api -> catalogo/sucursalesCadenaComercial
+ *     remitente:
+ *       type: object
+ *       properties: 
+ *          primerNombre:
+ *            type: string
+ *          segundoNombre:
+ *            type: string
+ *          primerApellido:
+ *            type: string
+ *          segundoApellido:
+ *            type: string
+ * 
+ *  ResponseCancelar:
+ *   type: object
+ *   properties:
+ *     status: 
+ *       type: integer
+ *       format: int64
+ *     message:
+ *       type: string
+ *     model:
+ *        type: object
+ *        properties:
+ *          folioTransaccion:
+ *             type: string
+ *          estatusTransaccion:
+ *             type: integer
+ *             format: int64
+ *          fechaCancelacion:
+ *             type: string
+ *             description: fecha y hora de la ejecución de la cancelación.
+ *          
+ */
+router.post("/cancelar", controller.cobrar);
+
+/**
+ * @swagger
+ *  /giro/actualizar:
+ *  post:
+ *     tags:
+ *       - Giro
+ *     description: Servicio para actualizar el giro de envío de dinero.
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *     - in: "header"
+ *       name: "authorization-pp"
+ *       example: "Bearer-PP TOKEN"
+ *     - in: "body"
+ *       name: "body"
+ *       description: "Estructura del request para la peticion del servicio"
+ *       required: true
+ *       schema:
+ *         $ref: "#/definitions/RequestActualizar"
+ *     responses:
+ *       200:
+ *         description: Regresa un estatus,mensaje y datos de una transacción en caso de realizar la cancelación exitosa.
+ *         schema:
+ *           $ref: '#/definitions/ResponseActualizar'
+ *
+ * definitions:
+ *  RequestActualizar:
+ *   type: object
+ *   properties:
+ *     transaccion:
+ *       type: object
+ *       properties: 
+ *         folioTransaccion:
+ *             type: string
+ *         idCadenaComercial:
+ *             type: integer
+ *             format: int64
+ *             description: Identificador de acuerdo al catalogo de cadenas comerciales proporcionado por la api
+ *         idSucursal:
+ *             type: integer
+ *             format: int64
+ *             description: Identificador de acuerdo al catalogo de cadenas sucursales proporcionado por la api -> catalogo/sucursalesCadenaComercial
+ *     remitente:
+ *       type: object
+ *       properties: 
+ *          primerNombre:
+ *            type: string
+ *          segundoNombre:
+ *            type: string
+ *          primerApellido:
+ *            type: string
+ *          segundoApellido:
+ *            type: string
+ *     destinatario:
+ *       type: object
+ *       properties: 
+ *          primerNombre:
+ *            type: string
+ *          segundoNombre:
+ *            type: string
+ *          primerApellido:
+ *            type: string
+ *          segundoApellido:
+ *            type: string
+ * 
+ *  ResponseActualizar:
+ *   type: object
+ *   properties:
+ *     status: 
+ *       type: integer
+ *       format: int64
+ *     message:
+ *       type: string
+ *     model:
+ *        type: object
+ *        properties:
+ *          folioTransaccion:
+ *             type: string
+ *          estatusTransaccion:
+ *             type: integer
+ *             format: int64
+ *          fechaCancelacion:
+ *             type: string
+ *             description: fecha y hora de la ejecución de la cancelación.
+ *          
+ */
+router.post("/actualizar", controller.cobrar);
 
 module.exports = router;

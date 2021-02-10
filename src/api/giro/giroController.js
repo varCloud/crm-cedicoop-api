@@ -1,3 +1,4 @@
+const giroDAO = require("../../DAO/giroDAO");
 
 /*********** Estatus de transacción ********
 1.- Registrada
@@ -6,19 +7,12 @@
 4.- Cobrada
 */
 
-const { wiston } = require("../../config/winston");
 
 async function generar(req, res) {
     try {
-        res.status(200).json({
-            status: 200,
-            message: "Giro generado de manera correcta",
-            model: {
-                folioTransaccion: "123456789",
-                estatusTransaccion: 1,
-                fechaTransaccion: new Date()
-            }
-        });
+        postData = req.body
+        let data = await giroDAO.generar(postData);
+        res.status(200).json(data);
     } catch (err) {
         res.status(500).json({ status: 500, message: "Error internal server" });
     }

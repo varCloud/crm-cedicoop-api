@@ -68,6 +68,7 @@ async function validateToken(request, response, next) {
                 result.estatus = 200;
             }
         });
+        request.usuario = usuario;
         //var resulValidToken = await tokenDAO.validateToken(usuario); ///validación de token
         //if (resulValidToken.status == 200) {
         return next();
