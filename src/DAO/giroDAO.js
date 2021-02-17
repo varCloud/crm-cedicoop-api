@@ -4,11 +4,12 @@ async function generar(postData) {
     let response = {};
     try {
 
-        let sql = `CALL ENVNAC_SP_OBTENER_NACIONALIDADES ()`;
+        let sql = `CALL ENVNAC_SP_GENERAR_GIRO (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`;
         let result = await db.query(sql,
             [
                 /*remitente*/
-                postData.remitente.nombres,
+                postData.remitente.primerNombre,
+                postData.remitente.segundoNombre,
                 postData.remitente.primerApellido,
                 postData.remitente.segundoApellido,
                 postData.remitente.idGenero,
@@ -23,7 +24,7 @@ async function generar(postData) {
                 postData.domicilioRemitente.numeroInt,
                 postData.domicilioRemitente.colonia,
                 postData.domicilioRemitente.codigoPostal,
-                postData.domicilioRemitente.municipio,
+                postData.domicilioRemitente.ciudad,
                 postData.domicilioRemitente.entidadFederativa,
                 postData.domicilioRemitente.pais,
                 /*identificacion*/
@@ -31,7 +32,8 @@ async function generar(postData) {
                 postData.identificacion.fechaExpiracion,
                 postData.identificacion.numeroIdentificacion,
                 /*destinatario*/
-                postData.destinatario.nombres,
+                postData.destinatario.primerNombre,
+                postData.destinatario.segundoNombre,
                 postData.destinatario.primerApellido,
                 postData.destinatario.segundoApellido,
                 postData.destinatario.telefono,
@@ -39,17 +41,21 @@ async function generar(postData) {
                 postData.destinatario.ciudad,
                 /*transaccion*/
                 postData.transaccion.idCadenaComercial,
-                postData.transaccion.numeroSucursal,
-                postData.transaccion.monto,
+                postData.transaccion.idSucursal,
                 postData.transaccion.idCadenaComercialDestinatario,
                 postData.transaccion.idSucursalDestinatario,
+                postData.transaccion.monto,
+                postData.transaccion.comision,
                 /*dataAdicional*/
-                postData.dataAdicional.data
+                postData.dataAdicional.data,
+
+                /*Cliente API*/
+                postData.usuario.idCliente
 
             ]);
         response = JSON.parse(JSON.stringify(result[0][0]));
         if (response.estatus == 200) {
-            response.nacionalidades = JSON.parse(JSON.stringify(result[1]));
+            response.modelo = JSON.parse(JSON.stringify(result[1][0]));
         }
         return response;
     } catch (ex) {
@@ -60,11 +66,11 @@ async function generar(postData) {
 async function consultar(postData) {
     let response = {};
     try {
-        let sql = `CALL ENVNAC_SP_OBTENER_NACIONALIDADES ()`;
+        let sql = `CALL ENVNAC_SP_CONSULTAR_GIRO(?)`;
         let result = await db.query(sql, [postData.folioTransaccion])
         response = JSON.parse(JSON.stringify(result[0][0]));
         if (response.estatus == 200) {
-            response.nacionalidades = JSON.parse(JSON.stringify(result[1]));
+            response.modelo = JSON.parse(JSON.stringify(result[1][0]));
         }
         return response;
     } catch (ex) {
@@ -72,19 +78,24 @@ async function consultar(postData) {
     }
 }
 
-async function aprovisionarCobro(postData) {
+async function aprovisionar(postData) {
 
     let response = {};
     try {
-        let sql = `CALL ENVNAC_SP_OBTENER_NACIONALIDADES ()`;
+        let sql = 'CALL ENVNAC_SP_GENERAR_APROVISION(?,?,?,?,?,?)';
         let result = await db.query(sql, [
             postData.folioTransaccion,
             postData.idCadenaComercial,
-            postData.idSucursal
+            postData.idSucursal,
+            postData.otp,
+            postData.idTipoAprovision,
+            /*Cliente API*/
+            postData.usuario.idCliente
+            
         ])
         response = JSON.parse(JSON.stringify(result[0][0]));
         if (response.estatus == 200) {
-            response.nacionalidades = JSON.parse(JSON.stringify(result[1]));
+            response.modelo = JSON.parse(JSON.stringify(result[1][0]));
         }
         return response;
     } catch (ex) {
@@ -93,26 +104,28 @@ async function aprovisionarCobro(postData) {
 }
 
 async function cobrar(postData) {
-
     let response = {};
     try {
-        let sql = `CALL ENVNAC_SP_OBTENER_NACIONALIDADES ()`;
+        let sql = `CALL ENVNAC_SP_GENERAR_COBRO(?,?,?,?,?,?,?,?,?,?,?,?,?)`;
         let result = await db.query(sql, [
             postData.transaccion.folioTransaccion,
-            postData.transaccion.numeroSucursal,
+            postData.transaccion.idCadenaComercial,
+            postData.transaccion.idSucursal,
             postData.transaccion.otpTransaccion,
             postData.destinatario.primerNombre,
             postData.destinatario.segundoNombre,
             postData.destinatario.primerApellido,
             postData.destinatario.segundoApellido,
             postData.destinatario.telefono,
-            postData.destinatario.estado,
+            postData.destinatario.ciudad,
             postData.destinatario.entidadFederativa,
-            postData.dataAdicional.data
+            postData.dataAdicional.data,
+            /*Cliente API*/
+            postData.usuario.idCliente
         ])
         response = JSON.parse(JSON.stringify(result[0][0]));
         if (response.estatus == 200) {
-            response.nacionalidades = JSON.parse(JSON.stringify(result[1]));
+            response.modelo = JSON.parse(JSON.stringify(result[1][0]));
         }
         return response;
     } catch (ex) {
@@ -124,20 +137,23 @@ async function cancelar(postData) {
 
     let response = {};
     try {
-        let sql = `CALL ENVNAC_SP_OBTENER_NACIONALIDADES ()`;
+        let sql = `CALL ENVNAC_SP_CANCELAR_GIRO(?,?,?,?,?,?,?,?,?)`;
         let result = await db.query(sql, [
             postData.transaccion.folioTransaccion,
             postData.transaccion.idCadenaComercial,
             postData.transaccion.idSucursal,
+            postData.transaccion.otpTransaccion,
             postData.remitente.primerNombre,
             postData.remitente.segundoNombre,
             postData.remitente.primerApellido,
-            postData.remitente.segundoApellido
+            postData.remitente.segundoApellido,
+            /*Cliente API*/
+            postData.usuario.idCliente
 
         ])
         response = JSON.parse(JSON.stringify(result[0][0]));
         if (response.estatus == 200) {
-            response.nacionalidades = JSON.parse(JSON.stringify(result[1]));
+            response.modelo = JSON.parse(JSON.stringify(result[1][0]));
         }
         return response;
     } catch (ex) {
@@ -149,7 +165,7 @@ async function actualizar(postData) {
 
     let response = {};
     try {
-        let sql = `CALL ENVNAC_SP_OBTENER_NACIONALIDADES ()`;
+        let sql = `CALL ENVNAC_SP_ACTUALIZAR_GIRO (?,?,?,?,?,?,?,?,?,?,?,?,?)`;
         let result = await db.query(sql, [
             /*transaccion*/
             postData.transaccion.folioTransaccion,
@@ -166,11 +182,13 @@ async function actualizar(postData) {
             postData.destinatario.segundoNombre,
             postData.destinatario.primerApellido,
             postData.destinatario.segundoApellido,
+            /*Cliente API*/
+            postData.usuario.idCliente
 
         ])
         response = JSON.parse(JSON.stringify(result[0][0]));
         if (response.estatus == 200) {
-            response.nacionalidades = JSON.parse(JSON.stringify(result[1]));
+            response.modelo = JSON.parse(JSON.stringify(result[1]));
         }
         return response;
     } catch (ex) {
@@ -178,45 +196,14 @@ async function actualizar(postData) {
     }
 }
 
-async function aprovisionarActualiza(postData) {
-
-    let response = {};
-    try {
-        let sql = `CALL ENVNAC_SP_OBTENER_NACIONALIDADES ()`;
-        let result = await db.query(sql, [
-            /*transaccion*/
-            postData.transaccion.folioTransaccion,
-            postData.transaccion.idCadenaComercial,
-            postData.transaccion.idSucursal,
-            /*remitente*/
-            postData.remitente.primerNombre,
-            postData.remitente.segundoNombre,
-            postData.remitente.primerApellido,
-            postData.remitente.segundoApellido,
-            /*destinatario*/
-            postData.destinatario.primerNombre,
-            postData.destinatario.segundoNombre,
-            postData.destinatario.primerApellido,
-            postData.destinatario.segundoApellido,
-
-        ])
-        response = JSON.parse(JSON.stringify(result[0][0]));
-        if (response.estatus == 200) {
-            response.nacionalidades = JSON.parse(JSON.stringify(result[1]));
-        }
-        return response;
-    } catch (ex) {
-        throw ex;
-    }
-}
 
 
 module.exports = {
     generar,
     consultar,
-    aprovisionarCobro,
+    aprovisionar,
     cobrar,
     cancelar,
     actualizar,
-    aprovisionarActualiza
+    
 }

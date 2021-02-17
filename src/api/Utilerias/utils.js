@@ -2,7 +2,7 @@ const winston = require("../../config/winston");
 const pathDestino = "src/imgs/eventos";
 const pathImagenDefault = "src/imgs/eventos/default.jpg";
 const db = require("../../config/database");
-
+const  {authenticator} = require('otplib');
 
 function postDataInvalido(postData) {
     return {
@@ -86,6 +86,16 @@ function getIdService(url) {
     }
 }
 
+function generarOTP() {
+    const secret = 'pagaphone2021';
+    authenticator.options = {
+        digits: 6,
+        window:1
+    };
+    return authenticator.generate(secret);
+}
+
+
 enumGatewayProvider = {
     ALTAN: 1,
     NETWEY: 2
@@ -96,5 +106,6 @@ module.exports = {
     errorGenerico,
     getIdService,
     getCredentialsOperatorByCustomer,
+    generarOTP,
     enumGatewayProvider
 }
