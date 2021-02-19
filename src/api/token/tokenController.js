@@ -1,6 +1,6 @@
 const winston = require("../../config/winston");
 const tokenDAO = require("../../DAO/tokenDAO");
-const utils = require("../utilerias/utils")
+
 var jwt = require('jsonwebtoken');
 const configGlobal = require('../../config/config');
 var jwtClave = configGlobal.JWT_KEY;

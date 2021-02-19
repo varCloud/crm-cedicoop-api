@@ -56,6 +56,7 @@ async function cobrar(req, res) {
         }
         res.status(200).json(data);
     } catch (err) {
+        console.log(" cobrar ERROR " , err)
         res.status(500).json({ status: 500, message: "Error internal server" });
     }
 }
