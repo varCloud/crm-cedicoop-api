@@ -214,10 +214,12 @@ router.post("/generar", token.validateToken, controller.generar);
  *     model:
  *      type: object
  *      properties: 
- *        destinatario:
+ *        remitente:
  *          type: object
  *          properties: 
- *            nombres:
+ *            primerNombre:
+ *             type: string
+ *            segundoNombre:
  *             type: string
  *            primerApellido:
  *             type: string
@@ -225,7 +227,24 @@ router.post("/generar", token.validateToken, controller.generar);
  *             type: string
  *            telefono:
  *             type: string
- *            estado:
+ *            entidadFederativa:
+ *             type: string
+ *            ciudad:
+ *             type: string
+ *        destinatario:
+ *          type: object
+ *          properties: 
+ *            primerNombre:
+ *             type: string
+ *            segundoNombre:
+ *             type: string
+ *            primerApellido:
+ *             type: string
+ *            segundoApellido:
+ *             type: string
+ *            telefono:
+ *             type: string
+ *            entidadFederativa:
  *             type: string
  *            ciudad:
  *             type: string

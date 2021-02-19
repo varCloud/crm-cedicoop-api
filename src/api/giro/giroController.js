@@ -1,6 +1,6 @@
 const giroDAO = require("../../DAO/giroDAO");
 const utlis = require("../utilerias/utils")
-
+const webHook = require("../../webhook/webhook")
 /*********** Estatus de transacción ********
 1.- Registrada
 2.- Declinada
@@ -49,6 +49,11 @@ async function cobrar(req, res) {
         postData = req.body
         postData.usuario = req.usuario
         let data = await giroDAO.cobrar(postData);
+        if(data.estatus==200){
+            let postDataWebHook = {...data.modelo,...data.modeloInterno,idCliente: postData.usuario.idCliente};
+            webHook.notificar(postDataWebHook)
+            delete data.modeloInterno    
+        }
         res.status(200).json(data);
     } catch (err) {
         res.status(500).json({ status: 500, message: "Error internal server" });

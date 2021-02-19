@@ -5,8 +5,6 @@ var jwt = require('jsonwebtoken');
 const configGlobal = require('../../config/config');
 var jwtClave = configGlobal.JWT_KEY;
 var jwtTiempoToken = 60 * 60 * 24; // expires in 24 hours
-var netweyApi = require("../../netwey/netwey")
-
 
 async function generateToken(req, res) {
     try {
@@ -56,7 +54,6 @@ async function validateToken(request, response, next) {
             return response.status(401).json(result);
         }
         token = token.replace('Bearer-PP ', '')
-
         jwt.verify(token, jwtClave, function (err, user) {
             if (err) {
                 result.mensaje = "JWT Token invalido";
@@ -69,12 +66,7 @@ async function validateToken(request, response, next) {
             }
         });
         request.usuario = usuario;
-        //var resulValidToken = await tokenDAO.validateToken(usuario); ///validación de token
-        //if (resulValidToken.status == 200) {
         return next();
-        //} else {
-        //   return response.status(500).json({ status: 500, message: resulValidToken.message || "Token invalido" });
-        // }
     } catch (err) {
         return response.status(500).json({ status: 500, message: "Error interno del servidor" });
     }

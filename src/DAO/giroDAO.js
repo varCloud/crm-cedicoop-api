@@ -70,7 +70,11 @@ async function consultar(postData) {
         let result = await db.query(sql, [postData.folioTransaccion])
         response = JSON.parse(JSON.stringify(result[0][0]));
         if (response.estatus == 200) {
-            response.modelo = JSON.parse(JSON.stringify(result[1][0]));
+            response.modelo = {
+                remitente: JSON.parse(JSON.stringify(result[1][0])),
+                destinatario: JSON.parse(JSON.stringify(result[2][0])),
+                transaccion: JSON.parse(JSON.stringify(result[3][0]))
+            }
         }
         return response;
     } catch (ex) {
@@ -126,9 +130,11 @@ async function cobrar(postData) {
         response = JSON.parse(JSON.stringify(result[0][0]));
         if (response.estatus == 200) {
             response.modelo = JSON.parse(JSON.stringify(result[1][0]));
+            response.modeloInterno = JSON.parse(JSON.stringify(result[2][0]));
         }
         return response;
     } catch (ex) {
+        console.log("+++++++++++++++++Error: ",ex)
         throw ex;
     }
 }

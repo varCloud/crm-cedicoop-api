@@ -19,6 +19,8 @@ module.exports = {
   PORT_BD: process.env.PORT_BD,
   /*Token */
   JWT_KEY: process.env.JWT_KEY || 'Ultr4GriD_dev',
+  /*API_WEBHOOK*/
+  API_WEBHOOK: process.env.API_WEBHOOK
 }
 
 console.log("variables de entorno ::::",module.exports);
