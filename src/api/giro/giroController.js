@@ -79,6 +79,7 @@ async function actualizar(req, res) {
         let data = await giroDAO.actualizar(postData);
         res.status(200).json(data);
     } catch (err) {
+        console.log("err actualizar", err)
         res.status(500).json({ status: 500, message: "Error internal server" });
     }
 }
