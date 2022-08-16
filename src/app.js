@@ -44,6 +44,7 @@ app.use("/token", require("./api/token/token"));
 app.use("/echo", require("./api/echo/echo"));
 app.use("/catalogo", require("./api/catalogo/catalogo"));
 app.use("/giro", require("./api/giro/giro"));
+app.use("/usuario", require("./api/usuario/usuario"));
 
 const swaggerSpec = swaggerJSDoc({
     swaggerDefinition: {
