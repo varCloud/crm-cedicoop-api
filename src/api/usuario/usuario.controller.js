@@ -4,7 +4,7 @@ const configGlobal = require('../../config/config');
 
 async function crearUsuario(req, res) {
     try {
-
+        //logica de negocio
         let data = await usuarioDAO.crearUsuario(req.body);
         res.status(200).json(data);
 

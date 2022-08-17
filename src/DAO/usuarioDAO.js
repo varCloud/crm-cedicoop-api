@@ -18,7 +18,6 @@ class UsarioDAO{
             let options = params ?  {[Op.eq] : params.id } : { [Op.notIn]:0}
             let filter  = {idUsuario : options}
             let usuarios = await usuarioModel.findAll(
-                
                 {
                     logging:true, 
                     where: filter,

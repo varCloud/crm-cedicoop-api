@@ -7,7 +7,7 @@ const Usuarios = sequelizeCrm.define('usuarios', {
     // Model attributes are defined here
     idUsuario: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        allowNull: true,
         primaryKey:true
     },
 
@@ -31,6 +31,9 @@ const Usuarios = sequelizeCrm.define('usuarios', {
         type: DataTypes.STRING
     },
     idRol: {
+        type: DataTypes.INTEGER
+    },
+    activo: {
         type: DataTypes.INTEGER
     },
 }, {
