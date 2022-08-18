@@ -45,6 +45,7 @@ app.use("/echo", require("./api/echo/echo"));
 app.use("/catalogo", require("./api/catalogo/catalogo"));
 app.use("/giro", require("./api/giro/giro"));
 app.use("/usuario", require("./api/usuario/usuario"))
+app.use("/cursos", require("./api/cursos/cursos"));
 app.use("/intereses", require("./api/intereses/intereses"));
 
 const swaggerSpec = swaggerJSDoc({
@@ -54,7 +55,7 @@ const swaggerSpec = swaggerJSDoc({
             version: '1.0.0'
         }
     },
-    apis: ['./src/api/echo/echo.js','./src/api/token/token.js','./src/api/catalogo/catalogo.js','./src/api/giro/giro.js'],
+    apis: ['./src/api/echo/echo.js', './src/api/token/token.js', './src/api/catalogo/catalogo.js', './src/api/giro/giro.js'],
     host: 'localhost:3008',
     definitions: {
         resp: {
