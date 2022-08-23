@@ -1,50 +1,54 @@
-
-
 const usuarioModel = require('./../Models/usuario.model');
 const { Op } = require("sequelize");
-class UsarioDAO{
+class UsarioDAO {
 
-    async crearUsuario(usuario){
+    async crearUsuario(usuario) {
         try {
-            let usuarioActual = await usuarioModel.create(usuario)    
+            await usuarioModel.create(usuario)
+            let usuarioActual = await usuarioModel.findOne({
+                order: [
+                    ['idUsuario', 'DESC']
+                ]
+            })
             return usuarioActual;
         } catch (error) {
             throw error;
         }
     }
 
-    async obtenerUsuarios(params){
+    async obtenerUsuarios(params) {
         try {
-            let options = params ?  {[Op.eq] : params.id } : { [Op.notIn]:0}
-            let filter  = {idUsuario : options}
-            let usuarios = await usuarioModel.findAll(
-                {
-                    logging:true, 
-                    where: filter,
-                    include: [{
-                        association: 'Roles',
-                    }]
-                })   
+            let options = params ? {
+                [Op.eq]: params.id } : {
+                [Op.notIn]: 0 }
+            let filter = { idUsuario: options }
+            let usuarios = await usuarioModel.findAll({
+                logging: true,
+                where: filter,
+                include: [{
+                    association: 'Roles',
+                }]
+            })
             return usuarios;
         } catch (error) {
             throw error;
         }
     }
 
-    async actualizarUsuario(usuario){
+    async actualizarUsuario(usuario) {
         try {
 
-            let usuarioActual = await usuarioModel.update({...usuario} ,{ logging:true, where :{idUsuario:usuario.idUsuario}}) 
+            let usuarioActual = await usuarioModel.update({...usuario }, { logging: true, where: { idUsuario: usuario.idUsuario } })
             return usuarioActual;
         } catch (error) {
             throw error;
         }
     }
 
-    async eliminarUsuario(params){
+    async eliminarUsuario(params) {
         try {
 
-            let usuarioActual = await usuarioModel.destroy({where :{idUsuario: params.id }}) 
+            let usuarioActual = await usuarioModel.destroy({ where: { idUsuario: params.id } })
             return usuarioActual;
         } catch (error) {
             throw error;

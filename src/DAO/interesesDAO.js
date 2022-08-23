@@ -1,7 +1,7 @@
 
 
 const interesesModel = require('../Models/intereses.model');
-const { Op, sequelize } = require("sequelize");
+const { Op , sequelize} = require("sequelize");
 
 class interesesDAO {
 
