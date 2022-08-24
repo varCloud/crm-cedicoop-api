@@ -47,6 +47,7 @@ app.use("/usuario", require("./api/usuario/usuario"))
 app.use("/cursos", require("./api/cursos/cursos"));
 app.use("/intereses", require("./api/intereses/intereses"));
 app.use("/cliente", require("./api/cliente/cliente"));
+app.use("/tipoCliente", require("./api/tipoCliente/tipoCliente"));
 
 const swaggerSpec = swaggerJSDoc({
     swaggerDefinition: {

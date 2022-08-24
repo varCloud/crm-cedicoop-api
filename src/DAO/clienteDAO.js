@@ -46,9 +46,8 @@ class ClienteDAO {
         }
     }
 
-    async eliminarCliente(params) {
+    async eliminarCliente(cliente) {
         try {
-
             let clienteActual = await clienteModel.update({ activo: 0 }, { logging: true, where: { idcliente: cliente.idCliente } })
             return clienteActual;
         } catch (error) {
