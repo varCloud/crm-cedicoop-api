@@ -46,6 +46,7 @@ app.use("/catalogo", require("./api/catalogo/catalogo"));
 app.use("/usuario", require("./api/usuario/usuario"))
 app.use("/cursos", require("./api/cursos/cursos"));
 app.use("/intereses", require("./api/intereses/intereses"));
+app.use("/cliente", require("./api/cliente/cliente"));
 
 const swaggerSpec = swaggerJSDoc({
     swaggerDefinition: {
