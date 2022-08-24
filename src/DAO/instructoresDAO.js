@@ -37,7 +37,6 @@ class InstructoresDAO {
 
     async actualizarInstructor(instructor) {
         try {
-
             let instructorActual = await instructorModel.update({...instructor }, { logging: true, where: { idInstructor: instructor.idInstructor } })
             return instructorActual;
         } catch (error) {
@@ -47,7 +46,6 @@ class InstructoresDAO {
 
     async eliminarInstructor(instructor) {
         try {
-
             let instructorActual = await instructorModel.update({ activo: 0 }, { logging: true, where: { idInstructor: instructor.idInstructor } })
             return instructorActual;
         } catch (error) {
