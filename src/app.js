@@ -43,10 +43,12 @@ app.get('/', function(req, res) {
 app.use("/token", require("./api/token/token"));
 app.use("/echo", require("./api/echo/echo"));
 app.use("/catalogo", require("./api/catalogo/catalogo"));
-app.use("/giro", require("./api/giro/giro"));
 app.use("/usuario", require("./api/usuario/usuario"))
+app.use("/cursos", require("./api/cursos/cursos"));
 app.use("/intereses", require("./api/intereses/intereses"));
 app.use("/instructores", require("./api/instructores/instructores"));
+app.use("/tipoSeguimiento", require("./api/tipoSeguimiento/tipoSeguimiento"));
+
 
 const swaggerSpec = swaggerJSDoc({
     swaggerDefinition: {

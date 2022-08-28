@@ -3,11 +3,16 @@
 const interesesModel = require('../Models/intereses.model');
 const { Op , sequelize} = require("sequelize");
 
-class interesesDAO{
+class interesesDAO {
 
-    async crearInteres(interes){
+    async crearInteres(interes) {
         try {
-            let interesActual =  await interesesModel.create(interes)
+            await interesesModel.create(interes)
+            let interesActual = await interesesModel.findOne({
+                order: [
+                    ['idCatInteres', 'DESC']
+                ]
+            })
             return interesActual;
         } catch (error) {
             throw error;
