@@ -19,8 +19,10 @@ class UsarioDAO {
     async obtenerUsuarios(params) {
         try {
             let options = params ? {
-                [Op.eq]: params.id } : {
-                [Op.notIn]: 0 }
+                [Op.eq]: params.id
+            } : {
+                [Op.notIn]: 0
+            }
             let filter = { idUsuario: options }
             let usuarios = await usuarioModel.findAll({
                 logging: true,
@@ -37,7 +39,6 @@ class UsarioDAO {
 
     async actualizarUsuario(usuario) {
         try {
-
             let usuarioActual = await usuarioModel.update({...usuario }, { logging: true, where: { idUsuario: usuario.idUsuario } })
             return usuarioActual;
         } catch (error) {
@@ -47,8 +48,7 @@ class UsarioDAO {
 
     async eliminarUsuario(params) {
         try {
-
-            let usuarioActual = await usuarioModel.destroy({ where: { idUsuario: params.id } })
+            let usuarioActual = await usuarioModel.update({ activo: 0 }, { logging: true, where: { idUsuario: params.id } })
             return usuarioActual;
         } catch (error) {
             throw error;
