@@ -46,6 +46,7 @@ app.use("/catalogo", require("./api/catalogo/catalogo"));
 app.use("/usuario", require("./api/usuario/usuario"))
 app.use("/cursos", require("./api/cursos/cursos"));
 app.use("/intereses", require("./api/intereses/intereses"));
+app.use("/catIntereses", require("./api/catIntereses/catIntereses"));
 app.use("/cliente", require("./api/cliente/cliente"));
 app.use("/tipoCliente", require("./api/tipoCliente/tipoCliente"));
 app.use("/tiposervicios", require("./api/tiposervicios/tiposervicios"));
