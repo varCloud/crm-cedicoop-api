@@ -53,6 +53,7 @@ app.use("/tiposervicios", require("./api/tiposervicios/tiposervicios"));
 app.use("/instructores", require("./api/instructores/instructores"));
 app.use("/tipoSeguimiento", require("./api/tipoSeguimiento/tipoSeguimiento"));
 app.use("/cotizaciones", require("./api/cotizaciones/cotizaciones"));
+app.use("/ventas", require('./api/ventas/ventas'))
 
 
 const swaggerSpec = swaggerJSDoc({
