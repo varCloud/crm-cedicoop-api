@@ -8,7 +8,10 @@ class ClienteDAO {
             let clienteActual = await clienteModel.findOne({
                 order: [
                     ['idCliente', 'DESC']
-                ]
+                ],
+                include: [{
+                    association: 'TipoClientes'
+                }]
             })
             return clienteActual;
         } catch (error) {
