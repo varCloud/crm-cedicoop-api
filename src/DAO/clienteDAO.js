@@ -28,6 +28,9 @@ class ClienteDAO {
             }
             let filter = { idcliente: options }
             let clientes = await clienteModel.findAll({
+                order: [
+                    ['idCliente', 'ASC']
+                ],
                 logging: true,
                 where: filter,
                 include: [{
