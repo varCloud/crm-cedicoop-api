@@ -10,4 +10,5 @@ class csv_cursosController {
         }
     }
 }
+
 module.exports = new csv_cursosController()
