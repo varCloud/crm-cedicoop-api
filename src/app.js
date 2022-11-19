@@ -56,6 +56,8 @@ app.use("/cotizaciones", require("./api/cotizaciones/cotizaciones"));
 app.use("/ventas", require('./api/ventas/ventas'))
 app.use("/calCotizaciones", require("./api/calCotizaciones/calCotizaciones"));
 app.use("/csv/tipoSeguimiento", require("./api/csv/tipoSeguimiento/csv_tipoSeguimiento"));
+app.use("/csv/cursos", require("./api/csv/cursos/csv_cursos"))
+app.use("/csv/tipoCliente", require("./api/csv/tipoCliente/csv_tipoCliente"))
 
 
 const swaggerSpec = swaggerJSDoc({
