@@ -2,7 +2,7 @@ const { Sequelize, DataTypes } = require('sequelize')
 const sequelizeCrm = require('../config/sequelize.crm')
 
 const tipoSeguimientos = sequelizeCrm.define("cat_tipo_seguimiento", {
-    idtipoSeguimiento: {
+    idTipoSeguimiento: {
         type: DataTypes.INTEGER,
         primaryKey: true
     },
