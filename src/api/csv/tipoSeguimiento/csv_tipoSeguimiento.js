@@ -1,7 +1,7 @@
 const { Router } = require("express");
 const router = Router();
-const csv_cursos = require("./csv_tipoSeguimiento.controller")
+const csv_TipoSeguimientoController = require("./csv_tipoSeguimiento.controller")
 
-router.get('/', csv_cursos.obtenertipoSeguimiento);
+router.get('/', csv_TipoSeguimientoController.obtenertipoSeguimiento);
 
 module.exports = router;
