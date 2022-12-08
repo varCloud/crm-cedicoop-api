@@ -28,6 +28,9 @@ class interesesDAO {
             let intereses = await interesesModel.findAll({
                 logging: true,
                 where: filter,
+                order: [
+                    ['idIntereseCliente', 'ASC']
+                ],
                 include: [{
                         association: 'Clientes'
                     },
