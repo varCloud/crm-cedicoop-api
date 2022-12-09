@@ -61,6 +61,7 @@ app.use("/csv/tipoCliente", require("./api/csv/tipoCliente/csv_tipoCliente"))
 app.use("/csv/catIntereses", require("./api/csv/catIntereses/csv_catIntereses"))
 app.use("/csv/tipoServicios", require("./api/csv/tipoServicios/csv_tipoServicios"))
 app.use("/csv/intereses", require("./api/csv/intereses/csv_intereses"))
+app.use("/csv/cliente", require("./api/csv/clientes/csv_clientes"))
 
 
 const swaggerSpec = swaggerJSDoc({
