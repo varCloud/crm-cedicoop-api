@@ -48,7 +48,7 @@ class UsarioDAO {
 
     async eliminarUsuario(params) {
         try {
-            let usuarioActual = await usuarioModel.update({ activo: 0 }, { logging: true, where: { idUsuario: params.id } })
+            let usuarioActual = await usuarioModel.update({ activo: 0 }, { logging: true, where: { idUsuario: params.idUsuario } })
             return usuarioActual;
         } catch (error) {
             throw error;
