@@ -15,7 +15,12 @@ const Instructores = sequelizeCrm.define('instructores', {
     apellidos: {
         type: DataTypes.STRING
     },
-
+    telefono: {
+        type: DataTypes.STRING
+    },
+    mail: {
+        type: DataTypes.STRING
+    },
     observaciones: {
         type: DataTypes.STRING
     },
